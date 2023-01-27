@@ -1,4 +1,5 @@
 using Microsoft.Extensions.Configuration;
+using Serilog;
 
 namespace Commitex.Console;
 
@@ -6,16 +7,13 @@ public class ConsoleApp
 {
     public async Task Main(string[] args)
     {
-        System.Console.WriteLine("Hello, World!");
-
         string diff;
         using (var reader = new StreamReader(System.Console.OpenStandardInput()))
         {
             diff = reader.ReadToEnd();
         }
 
-        System.Console.WriteLine($"diff: {diff}");
-
+        Log.Logger.Information("Diff: {diff}", diff);
         if (string.IsNullOrEmpty(diff) || diff.Length < 10)
         {
             System.Console.WriteLine("No diff provided");
@@ -38,6 +36,6 @@ public class ConsoleApp
 
         OsxClipboard.SetText(prediction);
 
-        System.Console.WriteLine(prediction);
+        Log.Information(prediction);
     }
 }

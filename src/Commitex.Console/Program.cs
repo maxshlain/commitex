@@ -6,12 +6,10 @@ public class Program
 {
     public static async Task Main(string[] args)
     {
-        using var log = new LoggerConfiguration()
+        Log.Logger = new LoggerConfiguration()
             .WriteTo.Console()
             .CreateLogger();
-        Log.Logger = log;
-        Log.Information("The global logger has been configured");
-        
+
         try
         {
             await new ConsoleApp().Main(args);
@@ -22,7 +20,7 @@ public class Program
         }
         finally
         {
-            Log.CloseAndFlush();
+            await Log.CloseAndFlushAsync();
         }
     }
 }
