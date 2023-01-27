@@ -13,7 +13,7 @@ public class ConsoleApp
             diff = reader.ReadToEnd();
         }
 
-        Log.Logger.Information("Diff: {diff}", diff);
+        Log.Logger.Debug("Diff: {diff}", diff);
         if (string.IsNullOrEmpty(diff) || diff.Length < 10)
         {
             System.Console.WriteLine("No diff provided");
