@@ -14,13 +14,13 @@ public class Program
     public static async Task Main(string[] args)
     {
         Console.WriteLine("Hello, World!");
-        
+
         string diff;
         using (var reader = new StreamReader(Console.OpenStandardInput()))
         {
             diff = reader.ReadToEnd();
         }
-        
+
         Console.WriteLine($"diff: {diff}");
 
         if (string.IsNullOrEmpty(diff) || diff.Length < 10)
@@ -35,13 +35,15 @@ public class Program
             .Build();
 
         Settings settings = configuration.GetSection("Settings").Get<Settings>()
-            ?? throw new Exception("Settings not found");
-        
+                            ?? throw new Exception("Settings not found");
+
         var prompt = "Propose a git commit message for this diff:\n\n" + diff;
 
         var predictor = new Commitex.Core.Predictor(settings.Token);
 
         var prediction = await predictor.PredictAsync(prompt);
+
+        OsxClipboard.SetText(prediction);
 
         Console.WriteLine(prediction);
     }
