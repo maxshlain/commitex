@@ -15,9 +15,8 @@ public class Predictor
 
     public async Task<string> PredictAsync(string text)
     {
-        
         var url = "https://api.openai.com/v1/";
-        
+
         var output = await url
             .AppendPathSegment("completions")
             .WithHeader("Content-Type", "application/json")
@@ -34,9 +33,15 @@ public class Predictor
             })
             .ReceiveJson<Dictionary<string, object>>();
 
-        var choicesText = output["choices"].ToString() ?? throw new NullReferenceException();
-        var choices = JsonSerializer.Deserialize<List<Dictionary<string, object>>>(choicesText);
-        var firstChoice = choices[0]["text"].ToString().Trim().Trim('"');
+        string choicesText = output["choices"].ToString() ?? throw new NullReferenceException();
+        List<Dictionary<string, object>> choices = JsonSerializer
+                                                       .Deserialize<List<Dictionary<string, object>>>(choicesText)
+                                                   ?? throw new NullReferenceException("Failed to deserialize choices");
+
+        var firstChoice = choices[0]["text"].ToString()
+                          ?? throw new NullReferenceException("Failed to get first choice");
+
+        firstChoice = firstChoice.Trim().Trim('"');
 
         return firstChoice;
     }
