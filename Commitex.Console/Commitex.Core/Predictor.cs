@@ -43,6 +43,11 @@ public class Predictor
 
         firstChoice = firstChoice.Trim().Trim('"');
 
+        if (firstChoice.StartsWith("Commit: "))
+        {
+            firstChoice = firstChoice.Substring(8);
+        }
+
         return firstChoice;
     }
 }
