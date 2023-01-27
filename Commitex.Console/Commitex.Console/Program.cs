@@ -21,7 +21,13 @@ public class Program
             diff = reader.ReadToEnd();
         }
         
-        Console.WriteLine(diff);
+        Console.WriteLine($"diff: {diff}");
+
+        if (string.IsNullOrEmpty(diff) || diff.Length < 10)
+        {
+            Console.WriteLine("No diff provided");
+            return;
+        }
 
         IConfiguration configuration = new ConfigurationBuilder()
             .AddJsonFile("appsettings.json", false, true)
