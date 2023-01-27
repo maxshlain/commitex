@@ -39,6 +39,5 @@ public class Predictor
         var firstChoice = choices[0]["text"].ToString().Trim().Trim('"');
 
         return firstChoice;
-
     }
 }
