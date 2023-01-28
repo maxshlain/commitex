@@ -1,50 +1,28 @@
-﻿using System.Security.Cryptography;
-using Commitex.Console;
-using Commitex.Core;
-using Microsoft.Extensions.Configuration;
+﻿using Serilog;
 
-public class Settings
-{
-    public string Token { get; set; }
-    public string Url { get; set; }
-}
+namespace Commitex.Console;
 
-public class Program
+public static class Program
 {
     public static async Task Main(string[] args)
     {
-        Console.WriteLine("Hello, World!");
+        Log.Logger = new LoggerConfiguration()
+            .WriteTo.Console()
+            .CreateLogger();
 
-        string diff;
-        using (var reader = new StreamReader(Console.OpenStandardInput()))
+        try
         {
-            diff = reader.ReadToEnd();
+            var diffProvider = new DiffProvider();
+            var app = new ConsoleApp(diffProvider);
+            await app.Main(args);
         }
-
-        Console.WriteLine($"diff: {diff}");
-
-        if (string.IsNullOrEmpty(diff) || diff.Length < 10)
+        catch (Exception ex)
         {
-            Console.WriteLine("No diff provided");
-            return;
+            Log.Error(ex, "");
         }
-
-        IConfiguration configuration = new ConfigurationBuilder()
-            .AddJsonFile("appsettings.json", false, true)
-            .AddJsonFile("appsettings.Development.json", false, true)
-            .Build();
-
-        Settings settings = configuration.GetSection("Settings").Get<Settings>()
-                            ?? throw new Exception("Settings not found");
-
-        var prompt = "Propose a git commit message for this diff:\n\n" + diff;
-
-        var predictor = new Commitex.Core.Predictor(settings.Token);
-
-        var prediction = await predictor.PredictAsync(prompt);
-
-        OsxClipboard.SetText(prediction);
-
-        Console.WriteLine(prediction);
+        finally
+        {
+            await Log.CloseAndFlushAsync();
+        }
     }
 }
