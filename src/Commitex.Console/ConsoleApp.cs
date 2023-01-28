@@ -5,14 +5,16 @@ namespace Commitex.Console;
 
 public class ConsoleApp
 {
+    private readonly DiffProvider _diffProvider;
+
+    public ConsoleApp(DiffProvider diffProvider)
+    {
+        _diffProvider = diffProvider;
+    }
+
     public async Task Main(string[] args)
     {
-        string diff;
-        using (var reader = new StreamReader(System.Console.OpenStandardInput()))
-        {
-            diff = reader.ReadToEnd();
-        }
-
+        var diff = _diffProvider.GetDiff();
         Log.Debug("Diff: {diff}", diff);
         if (string.IsNullOrEmpty(diff) || diff.Length < 10)
         {

@@ -2,7 +2,7 @@
 
 namespace Commitex.Console;
 
-public class Program
+public static class Program
 {
     public static async Task Main(string[] args)
     {
@@ -12,11 +12,13 @@ public class Program
 
         try
         {
-            await new ConsoleApp().Main(args);
+            var diffProvider = new DiffProvider();
+            var app = new ConsoleApp(diffProvider);
+            await app.Main(args);
         }
         catch (Exception ex)
         {
-            Log.Error(ex, "Something went wrong");
+            Log.Error(ex, "");
         }
         finally
         {
