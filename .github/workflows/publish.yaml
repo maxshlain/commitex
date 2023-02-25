@@ -27,10 +27,10 @@ jobs:
     - name: Build and create artifacts for Mac
       run: dotnet publish -c Release -r osx-x64 --self-contained true
       shell: pwsh
-      working-directory: ./MyDotNetCoreApp
+      working-directory: ./src/Commitex.Console
 
     - name: Archive artifacts for Mac
       uses: actions/upload-artifact@v2
       with:
-        name: MyDotNetCoreApp-MacOS-x64
-        path: ./MyDotNetCoreApp/bin/Release/net7.0/osx-x64/publish
+        name: Commitex-MacOS-x64
+        path: ./src/Commitex.Console/bin/Release/net7.0/osx-x64/publish
