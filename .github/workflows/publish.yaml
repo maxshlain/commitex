@@ -16,13 +16,13 @@ jobs:
     - name: Build and create artifacts for Windows
       run: dotnet publish -c Release -r win-x64 --self-contained true
       shell: pwsh
-      working-directory: ./MyDotNetCoreApp
+      working-directory: ./src/Commitex.Console
 
     - name: Archive artifacts for Windows
       uses: actions/upload-artifact@v2
       with:
-        name: MyDotNetCoreApp-Windows-x64
-        path: ./MyDotNetCoreApp/bin/Release/net7.0/win-x64/publish
+        name: Commitex-Windows-x64
+        path: ./src/Commitex.Console/bin/Release/net7.0/win-x64/publish
 
     - name: Build and create artifacts for Mac
       run: dotnet publish -c Release -r osx-x64 --self-contained true
