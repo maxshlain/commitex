@@ -1,3 +1,4 @@
+using System.Runtime.InteropServices;
 using Microsoft.Extensions.Configuration;
 using Serilog;
 
@@ -36,7 +37,11 @@ public class ConsoleApp
 
         var prediction = await predictor.PredictAsync(prompt);
 
-        OsxClipboard.SetText(prediction);
+        var isOsx = RuntimeInformation.IsOSPlatform(osPlatform: OSPlatform.OSX);
+        if (isOsx)
+        {
+            OsxClipboard.SetText(prediction);
+        }
 
         Log.Information(prediction);
     }
