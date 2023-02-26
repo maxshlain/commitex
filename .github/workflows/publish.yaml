@@ -1,6 +1,9 @@
 name: Build and create artifacts for dot net core 7 CLI app
 
-on: [tag]
+on: 
+  release: 
+    types: 
+      - published
 
 jobs:
   build:
