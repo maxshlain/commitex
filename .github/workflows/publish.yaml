@@ -16,6 +16,17 @@ jobs:
       with:
         dotnet-version: '7.0.x'
 
+    - name: Build and create artifacts for Linux
+      run: dotnet publish -c Release -r linux-x64 --self-contained true
+      shell: pwsh
+      working-directory: ./src/Commitex.Console
+
+    - name: Archive artifacts for Linux
+      uses: actions/upload-artifact@v2
+      with:
+        name: Commitex-Linux-x64
+        path: ./src/Commitex.Console/bin/Release/net7.0/linux-x64/publish
+
     - name: Build and create artifacts for Windows
       run: dotnet publish -c Release -r win-x64 --self-contained true
       shell: pwsh
